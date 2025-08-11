@@ -1,4 +1,6 @@
-# Yamcs QuickStart
+# Yamcs TrySpace
+
+This repository is a fork of the [Yamcs Quickstart](https://github.com/yamcs/quickstart).
 
 This repository holds the source code to start a basic Yamcs application that monitors a simulated spacecraft in low earth orbit.
 
@@ -8,6 +10,11 @@ You may find it useful as a starting point for your own project.
 ## Prerequisites
 
 * Java 17+
+  * For Ubuntu WSL
+    * sudo apt install openjdk-17-jdk
+    * Add the following to your `~/.bashrc` file:
+      * export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      * export PATH=$JAVA_HOME/bin:$PATH
 * Linux x64/aarch64, macOS x64/aarch64, or Windows x64
 
 A copy of Maven is also required, however this gets automatically downloaded an installed by using the `./mvnw` shell script as detailed below.
