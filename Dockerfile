@@ -3,16 +3,14 @@ FROM maven:3.9.9-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
-# Copy Maven files for dependency resolution
+# Copy files
 COPY pom.xml ./
 COPY mvnw mvnw.cmd ./
 COPY .mvn .mvn/
+COPY src/ src/
 
 # Download dependencies
 RUN mvn dependency:go-offline -B
-
-# Copy source code
-COPY src/ src/
 
 # Build the application
 RUN mvn clean package -DskipTests
