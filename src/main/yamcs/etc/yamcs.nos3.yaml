@@ -93,6 +93,9 @@ mdb:
   - type: xtce
     args:
       file: mdb/components/demo/demo.xtce
+  - type: xtce
+    args:
+      file: mdb/components/eps/eps.xtce
 
 # Configuration for streams created at server startup
 streamConfig:
