@@ -2,7 +2,7 @@
 .PHONY: all build clean container runtime start stop shell test
 
 # Variables
-export BUILD_IMAGE ?= tryspaceorg/tryspace-lab
+export BUILD_IMAGE ?= tryspaceorg/tryspace-lab:0.0.0
 export RUNTIME_GSW ?= tryspace-gsw
 
 # Color output function
