@@ -63,7 +63,7 @@ dataLinks:
 #    stream: truth42_data
 #    port: 5111
 #    updateSimulationTime: true
-#    packetPreprocessorClassName: org.yamcs.nos3.Truth42PacketPreprocessor    
+#    packetPreprocessorClassName: org.yamcs.tryspace.Truth42PacketPreprocessor    
 
 mdb:
   - type: xtce
