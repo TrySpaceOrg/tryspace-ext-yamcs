@@ -28,20 +28,20 @@ services:
   - class: org.yamcs.timeline.TimelineService
 
 dataLinks:
-#  - name: radio-in
-#    class: org.yamcs.tctm.UdpTmDataLink
-#    stream: tm_realtime
-#    port: 6011
-#    packetPreprocessorClassName: org.yamcs.tctm.cfs.CfsPacketPreprocessor
-#    packetPreprocessorArgs:
-#      useLocalGenerationTime: true
+  - name: radio-in
+    class: org.yamcs.tctm.UdpTmDataLink
+    stream: tm_realtime
+    port: 12346
+    packetPreprocessorClassName: org.yamcs.tctm.cfs.CfsPacketPreprocessor
+    packetPreprocessorArgs:
+      useLocalGenerationTime: true
 
-#  - name: radio-out
-#    class: org.yamcs.tctm.UdpTcDataLink
-#    stream: tc_realtime
-#    host: cryptolib
-#    port: 6010
-#    commandPostprocessorClassName: org.yamcs.tctm.cfs.CfsCommandPostprocessor
+  - name: radio-out
+    class: org.yamcs.tctm.UdpTcDataLink
+    stream: tc_realtime
+    host: tryspace-director
+    port: 12345
+    commandPostprocessorClassName: org.yamcs.tctm.cfs.CfsCommandPostprocessor
 
   - name: debug-in
     class: org.yamcs.tctm.UdpTmDataLink
@@ -96,6 +96,9 @@ mdb:
   - type: xtce
     args:
       file: mdb/components/eps/eps.xtce
+  - type: xtce
+    args:
+      file: mdb/components/radio/radio.xtce
 
 # Configuration for streams created at server startup
 streamConfig:
