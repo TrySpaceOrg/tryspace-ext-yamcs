@@ -24,25 +24,42 @@ public class Truth42PacketPreprocessor extends AbstractPacketPreprocessor {
     public TmPacket process(TmPacket packet) {
 
         byte[] bytes = packet.getPacket();
-        if (bytes.length < 20) { 
-            log.warn("Short packet of {} bytes (exepcted at least 20", bytes.length);
+        if (bytes.length < 276) { // Exact expected size for XTCE/C packet (34 doubles + 1 int = 34*8 + 4 = 276)
+            log.warn("Short packet of {} bytes (expected 276)", bytes.length);
             return null;
         }
-        
+
         ByteBuffer bb = ByteBuffer.wrap(bytes);
-        short year = bb.getShort();
-        short doy = bb.getShort();
-        /*short month =*/ bb.getShort();
-        /*short day = */bb.getShort();
-        short hour = bb.getShort();
-        short minute = bb.getShort();
-        double second = bb.getDouble();
-        int secint = (int) second;
-        int millisec = (int) ((second-secint)/1000.0); 
-        var dtc = new TaiUtcConverter.DateTimeComponents(year, doy,  hour,  minute,
-                 secint,  millisec);            
-        var gentime = TimeEncoding.fromUtc(dtc);
+        bb.order(java.nio.ByteOrder.LITTLE_ENDIAN); // C default is little-endian
+
+        // Parse fields in XTCE/C order
+        double dyn_time = bb.getDouble();
+        double[] pos_n = new double[3];
+        for (int i = 0; i < 3; i++) pos_n[i] = bb.getDouble();
+        double[] svb = new double[3];
+        for (int i = 0; i < 3; i++) svb[i] = bb.getDouble();
+        double[] bvb = new double[3];
+        for (int i = 0; i < 3; i++) bvb[i] = bb.getDouble();
+        double[] hvb = new double[3];
+        for (int i = 0; i < 3; i++) hvb[i] = bb.getDouble();
+        double[] wn = new double[3];
+        for (int i = 0; i < 3; i++) wn[i] = bb.getDouble();
+        double[] qn = new double[4];
+        for (int i = 0; i < 4; i++) qn[i] = bb.getDouble();
+        double mass = bb.getDouble();
+        double[] cm = new double[3];
+        for (int i = 0; i < 3; i++) cm[i] = bb.getDouble();
+        double[][] inertia = new double[3][3];
+        for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) inertia[i][j] = bb.getDouble();
+        int eclipse = bb.getInt();
+        double atmo_density = bb.getDouble();
+
+        // Set generation time from dyn_time (seconds since J2000)
+        // J2000 epoch: 2000-01-01T12:00:00 UTC
+        long j2000Millis = 946728000000L;
+        long gentime = j2000Millis + (long)(dyn_time * 1000.0f);
         packet.setGenerationTime(gentime);
+
         return packet;
     }
 
