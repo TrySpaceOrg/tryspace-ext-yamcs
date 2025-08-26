@@ -39,7 +39,7 @@ dataLinks:
   - name: radio-out
     class: org.yamcs.tctm.UdpTcDataLink
     stream: tc_realtime
-    host: tryspace-director
+    host: tryspace-cryptolib
     port: 12345
     commandPostprocessorClassName: org.yamcs.tctm.cfs.CfsCommandPostprocessor
 
