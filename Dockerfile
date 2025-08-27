@@ -27,6 +27,10 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/target/*-bundle.tar.gz ./
 RUN tar -xzf *-bundle.tar.gz --strip-components=1 && rm *-bundle.tar.gz
 
+# Copy entrypoint script (do this as root so we can chmod)
+COPY bin/entrypoint.sh /app/bin/entrypoint.sh
+RUN chmod +x /app/bin/entrypoint.sh
+
 # Create user for development (matches host user)
 ARG USER_ID=1000
 ARG GROUP_ID=1000
@@ -44,5 +48,6 @@ EXPOSE 8090 10015/udp 10025/udp
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8090 || exit 1
 
-# Start YAMCS
-CMD ["./bin/yamcsd"]
+# Start YAMCS (entrypoint already copied and chmod'd as root)
+ENTRYPOINT ["/app/bin/entrypoint.sh"]
+CMD [""]

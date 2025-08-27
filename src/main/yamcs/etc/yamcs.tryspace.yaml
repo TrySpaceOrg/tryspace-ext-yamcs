@@ -92,6 +92,7 @@ mdb:
 streamConfig:
   tm:
     - name: "tm_realtime"
+      processor: "realtime"
       rootContainer: "/CCSDS/CCSDS_TM"
     - name: "truth42_data"
       processor: "realtime"
