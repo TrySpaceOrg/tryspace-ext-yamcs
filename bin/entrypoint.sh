@@ -29,11 +29,27 @@ done
 if [ -d /app/displays ] && [ -z "$(ls -A "$DATA_DIR/storage/buckets/displays/objects" 2>/dev/null)" ]; then
   echo "Populating default displays into $DATA_DIR/storage/buckets/displays/objects"
   cp -a /app/displays/* "$DATA_DIR/storage/buckets/displays/objects/" 2>/dev/null || true
+  # Also copy any component display files (flatten component subdirs)
+  cp -a /app/displays/components/* "$DATA_DIR/storage/buckets/displays/objects/" 2>/dev/null || true
+  if [ -d /app/displays/components ]; then
+    for f in /app/displays/components/*/*; do
+      [ -f "$f" ] || continue
+      cp -a "$f" "$DATA_DIR/storage/buckets/displays/objects/" 2>/dev/null || true
+    done
+  fi
 fi
 
 if [ -d /app/procedures ] && [ -z "$(ls -A "$DATA_DIR/storage/buckets/stacks/objects" 2>/dev/null)" ]; then
   echo "Populating default stacks into $DATA_DIR/storage/buckets/stacks/objects"
   cp -a /app/procedures/* "$DATA_DIR/storage/buckets/stacks/objects/" 2>/dev/null || true
+  # Also copy any component procedure files (flatten component subdirs)
+  cp -a /app/procedures/components/* "$DATA_DIR/storage/buckets/stacks/objects/" 2>/dev/null || true
+  if [ -d /app/procedures/components ]; then
+    for f in /app/procedures/components/*/*; do
+      [ -f "$f" ] || continue
+      cp -a "$f" "$DATA_DIR/storage/buckets/stacks/objects/" 2>/dev/null || true
+    done
+  fi
 fi
 
 # Start Yamcs in background so we can register objects through its storage API, then wait on it

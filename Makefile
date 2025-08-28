@@ -30,7 +30,7 @@ copy-comp-gsw-files: ## Copy component GSW files
 	@rm -rf src/main/yamcs/displays/components/*
 	@for disp_dir in ../comp/*/gsw/displays; do \
 		if [ -d "$$disp_dir" ]; then \
-			comp_name=$$(basename $$(dirname "$$disp_dir"/..)); \
+			comp_name=$$(basename $$(dirname $$(dirname "$$disp_dir"))); \
 			mkdir -p "src/main/yamcs/displays/components/$$comp_name"; \
 			cp -f "$$disp_dir"/* "src/main/yamcs/displays/components/$$comp_name/" 2>/dev/null || true; \
 		fi; \
@@ -39,7 +39,7 @@ copy-comp-gsw-files: ## Copy component GSW files
 	@rm -rf src/main/yamcs/procedures/components/*
 	@for proc_dir in ../comp/*/gsw/procedures; do \
 		if [ -d "$$proc_dir" ]; then \
-			comp_name=$$(basename $$(dirname "$$proc_dir"/..)); \
+			comp_name=$$(basename $$(dirname $$(dirname "$$proc_dir"))); \
 			mkdir -p "src/main/yamcs/procedures/components/$$comp_name"; \
 			cp -f "$$proc_dir"/* "src/main/yamcs/procedures/components/$$comp_name/" 2>/dev/null || true; \
 		fi; \
