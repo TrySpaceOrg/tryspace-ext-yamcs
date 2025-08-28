@@ -16,7 +16,7 @@ all: runtime ## Build and prepare GSW for runtime
 build: ## Build GSW using Maven in container
 	docker run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) --user $(shell id -u):$(shell id -g) $(BUILD_IMAGE) ./mvnw clean package -DskipTests
 
-copy-comp-gsw-files: ## Copy component GSW files to mdb directory
+copy-comp-gsw-files: ## Copy component GSW files
 	@mkdir -p src/main/yamcs/mdb/components
 	@rm -rf src/main/yamcs/mdb/components/*
 	@for comp_dir in ../comp/*/gsw; do \
@@ -26,12 +26,32 @@ copy-comp-gsw-files: ## Copy component GSW files to mdb directory
 			cp -f "$$comp_dir"/* "src/main/yamcs/mdb/components/$$comp_name/" 2>/dev/null || true; \
 		fi; \
 	done
+	@mkdir -p src/main/yamcs/displays/components
+	@rm -rf src/main/yamcs/displays/components/*
+	@for disp_dir in ../comp/*/gsw/displays; do \
+		if [ -d "$$disp_dir" ]; then \
+			comp_name=$$(basename $$(dirname $$(dirname "$$disp_dir"))); \
+			mkdir -p "src/main/yamcs/displays/components/$$comp_name"; \
+			cp -f "$$disp_dir"/* "src/main/yamcs/displays/components/$$comp_name/" 2>/dev/null || true; \
+		fi; \
+	done
+	@mkdir -p src/main/yamcs/procedures/components
+	@rm -rf src/main/yamcs/procedures/components/*
+	@for proc_dir in ../comp/*/gsw/procedures; do \
+		if [ -d "$$proc_dir" ]; then \
+			comp_name=$$(basename $$(dirname $$(dirname "$$proc_dir"))); \
+			mkdir -p "src/main/yamcs/procedures/components/$$comp_name"; \
+			cp -f "$$proc_dir"/* "src/main/yamcs/procedures/components/$$comp_name/" 2>/dev/null || true; \
+		fi; \
+	done
 
 clean: stop ## Clean up GSW build artifacts and containers
 	./mvnw clean 2>/dev/null || true
 	docker rmi $(RUNTIME_GSW):latest 2>/dev/null || true
 	docker volume rm gsw-data 2>/dev/null || true
 	@rm -rf src/main/yamcs/mdb/components 2>/dev/null || true
+	@rm -rf src/main/yamcs/displays/components 2>/dev/null || true
+	@rm -rf src/main/yamcs/procedures/components 2>/dev/null || true
 
 logs: ## Show GSW container logs
 	docker logs -f $(RUNTIME_GSW)

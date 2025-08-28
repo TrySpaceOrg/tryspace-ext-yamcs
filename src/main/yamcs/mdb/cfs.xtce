@@ -23190,18 +23190,6 @@
             <xtce:EntryList>
               <xtce:ArgumentRefEntry argumentRef="DATASIZE"/>
               <xtce:ArgumentRefEntry argumentRef="MEMTYPE"/>
-              <xtce:ArrayArgumentRefEntry argumentRef="APADDING">
-                <xtce:DimensionList>
-                  <xtce:Dimension>
-                    <xtce:StartingIndex>
-                      <xtce:FixedValue>0</xtce:FixedValue>
-                    </xtce:StartingIndex>
-                    <xtce:EndingIndex>
-                      <xtce:FixedValue>1</xtce:FixedValue>
-                    </xtce:EndingIndex>
-                  </xtce:Dimension>
-                </xtce:DimensionList>
-              </xtce:ArrayArgumentRefEntry>
               <xtce:ArgumentRefEntry argumentRef="DATA"/>
               <xtce:ArgumentRefEntry argumentRef="DESTSYMADDRESS_OFFSET"/>
               <xtce:ArgumentRefEntry argumentRef="DESTSYMADDRESS_SYMNAME"/>
@@ -23226,18 +23214,6 @@
             <xtce:EntryList>
               <xtce:ArgumentRefEntry argumentRef="DATASIZE"/>
               <xtce:ArgumentRefEntry argumentRef="MEMTYPE"/>
-              <xtce:ArrayArgumentRefEntry argumentRef="APADDING">
-                <xtce:DimensionList>
-                  <xtce:Dimension>
-                    <xtce:StartingIndex>
-                      <xtce:FixedValue>0</xtce:FixedValue>
-                    </xtce:StartingIndex>
-                    <xtce:EndingIndex>
-                      <xtce:FixedValue>1</xtce:FixedValue>
-                    </xtce:EndingIndex>
-                  </xtce:Dimension>
-                </xtce:DimensionList>
-              </xtce:ArrayArgumentRefEntry>
               <xtce:ArgumentRefEntry argumentRef="SRCSYMADDRESS_OFFSET"/>
               <xtce:ArgumentRefEntry argumentRef="SRCSYMADDRESS_SYMNAME"/>
             </xtce:EntryList>
@@ -23289,33 +23265,9 @@
           <xtce:CommandContainer name="CFS_MM_LOAD_MEM_WID_CommandContainer">
             <xtce:EntryList>
               <xtce:ArgumentRefEntry argumentRef="NUMOFBYTES"/>
-              <xtce:ArrayArgumentRefEntry argumentRef="APADDING">
-                <xtce:DimensionList>
-                  <xtce:Dimension>
-                    <xtce:StartingIndex>
-                      <xtce:FixedValue>0</xtce:FixedValue>
-                    </xtce:StartingIndex>
-                    <xtce:EndingIndex>
-                      <xtce:FixedValue>2</xtce:FixedValue>
-                    </xtce:EndingIndex>
-                  </xtce:Dimension>
-                </xtce:DimensionList>
-              </xtce:ArrayArgumentRefEntry>
               <xtce:ArgumentRefEntry argumentRef="CRC"/>
               <xtce:ArgumentRefEntry argumentRef="DESTSYMADDRESS_OFFSET"/>
               <xtce:ArgumentRefEntry argumentRef="DESTSYMADDRESS_SYMNAME"/>
-              <xtce:ArrayArgumentRefEntry argumentRef="DATAARRAY">
-                <xtce:DimensionList>
-                  <xtce:Dimension>
-                    <xtce:StartingIndex>
-                      <xtce:FixedValue>0</xtce:FixedValue>
-                    </xtce:StartingIndex>
-                    <xtce:EndingIndex>
-                      <xtce:FixedValue>199</xtce:FixedValue>
-                    </xtce:EndingIndex>
-                  </xtce:Dimension>
-                </xtce:DimensionList>
-              </xtce:ArrayArgumentRefEntry>
             </xtce:EntryList>
           </xtce:CommandContainer>
         </xtce:MetaCommand>
@@ -23353,18 +23305,6 @@
           <xtce:CommandContainer name="CFS_MM_FILL_MEM_CommandContainer">
             <xtce:EntryList>
               <xtce:ArgumentRefEntry argumentRef="MEMTYPE"/>
-              <xtce:ArrayArgumentRefEntry argumentRef="APADDING">
-                <xtce:DimensionList>
-                  <xtce:Dimension>
-                    <xtce:StartingIndex>
-                      <xtce:FixedValue>0</xtce:FixedValue>
-                    </xtce:StartingIndex>
-                    <xtce:EndingIndex>
-                      <xtce:FixedValue>2</xtce:FixedValue>
-                    </xtce:EndingIndex>
-                  </xtce:Dimension>
-                </xtce:DimensionList>
-              </xtce:ArrayArgumentRefEntry>
               <xtce:ArgumentRefEntry argumentRef="NUMOFBYTES"/>
               <xtce:ArgumentRefEntry argumentRef="FILLPATTERN"/>
               <xtce:ArgumentRefEntry argumentRef="DESTSYMADDRESS_OFFSET"/>
@@ -23406,18 +23346,6 @@
           <xtce:CommandContainer name="CFS_MM_DUMP_MEM_TO_FILE_CommandContainer">
             <xtce:EntryList>
               <xtce:ArgumentRefEntry argumentRef="MEMTYPE"/>
-              <xtce:ArrayArgumentRefEntry argumentRef="APADDING">
-                <xtce:DimensionList>
-                  <xtce:Dimension>
-                    <xtce:StartingIndex>
-                      <xtce:FixedValue>0</xtce:FixedValue>
-                    </xtce:StartingIndex>
-                    <xtce:EndingIndex>
-                      <xtce:FixedValue>2</xtce:FixedValue>
-                    </xtce:EndingIndex>
-                  </xtce:Dimension>
-                </xtce:DimensionList>
-              </xtce:ArrayArgumentRefEntry>
               <xtce:ArgumentRefEntry argumentRef="NUMOFBYTES"/>
               <xtce:ArgumentRefEntry argumentRef="SRCSYMADDRESS_OFFSET"/>
               <xtce:ArgumentRefEntry argumentRef="SRCSYMADDRESS_SYMNAME"/>
@@ -26099,18 +26027,6 @@
             <xtce:EntryList>
               <xtce:ArgumentRefEntry argumentRef="CHAN"/>
               <xtce:ArgumentRefEntry argumentRef="DIRECTORY"/>
-              <xtce:ArrayArgumentRefEntry argumentRef="ASPARE">
-                <xtce:DimensionList>
-                  <xtce:Dimension>
-                    <xtce:StartingIndex>
-                      <xtce:FixedValue>0</xtce:FixedValue>
-                    </xtce:StartingIndex>
-                    <xtce:EndingIndex>
-                      <xtce:FixedValue>1</xtce:FixedValue>
-                    </xtce:EndingIndex>
-                  </xtce:Dimension>
-                </xtce:DimensionList>
-              </xtce:ArrayArgumentRefEntry>
             </xtce:EntryList>
           </xtce:CommandContainer>
         </xtce:MetaCommand>
