@@ -21,6 +21,33 @@ services:
         warmupTime: 60
   - class: org.yamcs.plists.ParameterListService
   - class: org.yamcs.timeline.TimelineService
+  - class: org.yamcs.cfdp.CfdpService
+    name: cfdp0
+    args:
+      inactivityTimeout: 30000
+      sequenceNrLength: 4
+      maxPduSize: 480
+      incomingBucket: "cfdpDown"
+      allowRemoteProvidedBucket: false
+      allowRemoteProvidedSubdirectory: false
+      allowDownloadOverwrites: false
+      maxExistingFileRenames: 1000
+      eofAckTimeout: 3000
+      eofAckLimit: 3
+      sleepBetweenPdus: 3000
+      maxNumPendingUploads: 1
+      localEntities:
+        - name: GSW
+          id: 21
+          bucket: cfdpUp
+      remoteEntities:
+        - name: FSW
+          id: 24
+          bucket: cfdpDown
+      senderFaultHandlers:
+        AckLimitReached: suspend
+      receiverFaultHandlers:
+        AckLimitReached: suspend
 dataLinks:
   - name: radio-in
     class: org.yamcs.tctm.UdpTmDataLink
@@ -63,22 +90,7 @@ mdb:
       file: mdb/cfs.xtce
   - type: xtce
     args:
-      file: mdb/ci_debug.xtce
-  - type: xtce
-    args:
-      file: mdb/cmd_util.xtce
-  - type: xtce
-    args:
-      file: mdb/pdu.xtce
-  - type: xtce
-    args:
       file: mdb/sim_42_truth.xtce
-  - type: xtce
-    args:
-      file: mdb/system.xtce
-  - type: xtce
-    args:
-      file: mdb/to_debug.xtce
   - type: xtce
     args:
       file: mdb/components/demo/demo.xtce
@@ -105,3 +117,5 @@ streamConfig:
   tc:
     - name: "tc_realtime"
       processor: "realtime"
+      rootContainer: "/CCSDS/CCSDS_TC"
+  sqlFile: "etc/extra_streams.sql"
