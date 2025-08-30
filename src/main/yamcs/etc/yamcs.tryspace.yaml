@@ -22,7 +22,7 @@ services:
   - class: org.yamcs.plists.ParameterListService
   - class: org.yamcs.timeline.TimelineService
   - class: org.yamcs.cfdp.CfdpService
-    name: cfdp0
+    name: cfdp
     args:
       inactivityTimeout: 30000
       sequenceNrLength: 4
