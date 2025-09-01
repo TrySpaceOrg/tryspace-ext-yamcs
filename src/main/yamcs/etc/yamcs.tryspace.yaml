@@ -26,6 +26,7 @@ services:
     args:
       inactivityTimeout: 30000
       sequenceNrLength: 4
+      entityIdLength: 4
       maxPduSize: 480
       incomingBucket: "cfdpDown"
       allowRemoteProvidedBucket: false
@@ -38,11 +39,11 @@ services:
       maxNumPendingUploads: 1
       localEntities:
         - name: GSW
-          id: 21
+          id: 23
           bucket: cfdpUp
       remoteEntities:
         - name: FSW
-          id: 24
+          id: 25
           bucket: cfdpDown
       senderFaultHandlers:
         AckLimitReached: suspend
