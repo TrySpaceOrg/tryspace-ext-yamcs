@@ -35,20 +35,23 @@ services:
       maxExistingFileRenames: 1000
       eofAckTimeout: 3000
       eofAckLimit: 3
-      sleepBetweenPdus: 3000
+      sleepBetweenPdus: 100
       maxNumPendingUploads: 1
       localEntities:
         - name: GSW
           id: 23
-          bucket: cfdpUp
+          bucket: cfdpDown
       remoteEntities:
         - name: FSW
           id: 25
-          bucket: cfdpDown
+          bucket: cfdpUp
       senderFaultHandlers:
         AckLimitReached: suspend
       receiverFaultHandlers:
         AckLimitReached: suspend
+      fileListingParserClassName: org.yamcs.filetransfer.CsvListingParser
+      fileListingParserArgs:
+        timestampMultiplier: 1
 dataLinks:
   - name: radio-in
     class: org.yamcs.tctm.UdpTmDataLink
