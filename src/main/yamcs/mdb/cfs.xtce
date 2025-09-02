@@ -21719,11 +21719,11 @@
             </xtce:SizeInBits>
           </xtce:StringDataEncoding>
         </xtce:StringArgumentType>
-        <xtce:EnumeratedArgumentType name="CLASS_Type" initialValue="CLASS 1 - NO FEEDBACK" shortDescription="CFDP Class 1 or 2">
+        <xtce:EnumeratedArgumentType name="CLASS_Type" initialValue="CLASS 2 - WITH FEEDBACK" shortDescription="CFDP Class 1 or 2">
           <xtce:IntegerDataEncoding sizeInBits="8" encoding="unsigned"/>
           <xtce:EnumerationList>
-            <xtce:Enumeration value="1" label="CLASS 1 - NO FEEDBACK"/>
-            <xtce:Enumeration value="2" label="CLASS 2 - WITH FEEDBACK"/>
+            <xtce:Enumeration value="0" label="CLASS 1 - NO FEEDBACK"/>
+            <xtce:Enumeration value="1" label="CLASS 2 - WITH FEEDBACK"/>
           </xtce:EnumerationList>
         </xtce:EnumeratedArgumentType>
         <xtce:EnumeratedArgumentType name="PRESERVE_Type" initialValue="KEEP" shortDescription="On success, delete (0) or keep (1)">
@@ -21733,15 +21733,10 @@
             <xtce:Enumeration value="1" label="KEEP"/>
           </xtce:EnumerationList>
         </xtce:EnumeratedArgumentType>
-        <xtce:StringArgumentType name="PEER_ENTITY_ID_Type" characterWidth="8" initialValue="0.21" shortDescription="Destination ID - 2 bytes">
-          <xtce:StringDataEncoding encoding="UTF-8">
-            <xtce:SizeInBits>
-              <xtce:Fixed>
-                <xtce:FixedValue>128</xtce:FixedValue>
-              </xtce:Fixed>
-            </xtce:SizeInBits>
-          </xtce:StringDataEncoding>
-        </xtce:StringArgumentType>
+        <xtce:IntegerArgumentType name="PEER_ENTITY_ID_Type" initialValue="23" shortDescription="Destination ID (entity id) - 4 bytes" signed="false">
+          <xtce:IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="leastSignificantByteFirst"/>
+          <xtce:ValidRange minInclusive="0" maxInclusive="4294967295"/>
+        </xtce:IntegerArgumentType>
         <xtce:StringArgumentType name="SRCPATH_Type" characterWidth="8" initialValue="/ram/" shortDescription="Path to poll">
           <xtce:StringDataEncoding encoding="UTF-8">
             <xtce:SizeInBits>
@@ -21792,16 +21787,11 @@
             <xtce:Enumeration value="1" label="CHAN 1"/>
           </xtce:EnumerationList>
         </xtce:EnumeratedArgumentType>
-        <xtce:StringArgumentType name="DEST_ID_Type" characterWidth="8" initialValue="0.21" shortDescription="Destination ID - 2 bytes">
-          <xtce:StringDataEncoding encoding="UTF-8">
-            <xtce:SizeInBits>
-              <xtce:Fixed>
-                <xtce:FixedValue>32</xtce:FixedValue>
-              </xtce:Fixed>
-            </xtce:SizeInBits>
-          </xtce:StringDataEncoding>
-        </xtce:StringArgumentType>
-        <xtce:StringArgumentType name="SRCFILENAME_Type" characterWidth="8" initialValue="/data/" shortDescription="Path/Filename to send">
+        <xtce:IntegerArgumentType name="DEST_ID_Type" initialValue="23" shortDescription="Destination ID (entity id) - 4 bytes" signed="false">
+          <xtce:IntegerDataEncoding sizeInBits="32" encoding="unsigned" byteOrder="leastSignificantByteFirst"/>
+          <xtce:ValidRange minInclusive="0" maxInclusive="4294967295"/>
+        </xtce:IntegerArgumentType>
+        <xtce:StringArgumentType name="SRCFILENAME_Type" characterWidth="8" initialValue="/d/" shortDescription="Path/Filename to send">
           <xtce:StringDataEncoding encoding="UTF-8">
             <xtce:SizeInBits>
               <xtce:Fixed>
@@ -21810,7 +21800,7 @@
             </xtce:SizeInBits>
           </xtce:StringDataEncoding>
         </xtce:StringArgumentType>
-        <xtce:StringArgumentType name="DSTFILENAME_Type" characterWidth="8" initialValue="/tmp/data" shortDescription="Path/Filename at destination">
+        <xtce:StringArgumentType name="DSTFILENAME_Type" characterWidth="8" initialValue="" shortDescription="Path/Filename at destination">
           <xtce:StringDataEncoding encoding="UTF-8">
             <xtce:SizeInBits>
               <xtce:Fixed>
@@ -26440,6 +26430,102 @@
           <xtce:ArgumentList/>
           <xtce:CommandContainer name="CFS_CF_NOOP_CommandContainer">
             <xtce:EntryList/>
+          </xtce:CommandContainer>
+        </xtce:MetaCommand>
+      </xtce:MetaCommandSet>
+    </xtce:CommandMetaData>
+  </xtce:SpaceSystem>
+  <xtce:SpaceSystem name="TO_DEBUG_HKPACKET">
+    <xtce:TelemetryMetaData>
+      <xtce:ParameterTypeSet>
+        <xtce:IntegerParameterType name="CMDCOUNTER_Type"
+          shortDescription="Count of all commands received." signed="false">
+          <xtce:IntegerDataEncoding sizeInBits="8" encoding="unsigned" />
+        </xtce:IntegerParameterType>
+        <xtce:IntegerParameterType name="ERRCOUNTER_Type"
+          shortDescription="Count of command errors." signed="false">
+          <xtce:IntegerDataEncoding sizeInBits="8" encoding="unsigned" />
+        </xtce:IntegerParameterType>
+        <xtce:IntegerParameterType name="SPARE_0_Type" shortDescription="" signed="false">
+          <xtce:IntegerDataEncoding sizeInBits="8" encoding="unsigned" />
+        </xtce:IntegerParameterType>
+        <xtce:IntegerParameterType name="SPARE_1_Type" shortDescription="" signed="false">
+          <xtce:IntegerDataEncoding sizeInBits="8" encoding="unsigned" />
+        </xtce:IntegerParameterType>
+      </xtce:ParameterTypeSet>
+      <xtce:ParameterSet>
+        <xtce:Parameter name="CMDCOUNTER" parameterTypeRef="CMDCOUNTER_Type" />
+        <xtce:Parameter name="ERRCOUNTER" parameterTypeRef="ERRCOUNTER_Type" />
+        <xtce:Parameter name="SPARE_0" parameterTypeRef="SPARE_0_Type" />
+        <xtce:Parameter name="SPARE_1" parameterTypeRef="SPARE_1_Type" />
+      </xtce:ParameterSet>
+      <xtce:ContainerSet>
+        <xtce:SequenceContainer name="TO_DEBUG_HKPACKET"
+          shortDescription="Housekeeping Packet Structure">
+          <xtce:EntryList>
+            <xtce:ParameterRefEntry parameterRef="CMDCOUNTER" />
+            <xtce:ParameterRefEntry parameterRef="ERRCOUNTER" />
+            <xtce:ParameterRefEntry parameterRef="SPARE_0" />
+            <xtce:ParameterRefEntry parameterRef="SPARE_1" />
+          </xtce:EntryList>
+          <xtce:BaseContainer containerRef="/CCSDS/CCSDS_TM">
+            <xtce:RestrictionCriteria>
+              <xtce:ComparisonList>
+                <xtce:Comparison parameterRef="/CCSDS/CCSDS_STREAMID" value="2280" />
+              </xtce:ComparisonList>
+            </xtce:RestrictionCriteria>
+          </xtce:BaseContainer>
+        </xtce:SequenceContainer>
+      </xtce:ContainerSet>
+    </xtce:TelemetryMetaData>
+    <xtce:CommandMetaData>
+      <xtce:ArgumentTypeSet>
+        <xtce:StringArgumentType name="DEST_IP_Type" characterWidth="8"
+          initialValue="tryspace-gsw" shortDescription="Destination IP">
+          <xtce:StringDataEncoding encoding="UTF-8">
+            <xtce:SizeInBits>
+              <xtce:Fixed>
+                <xtce:FixedValue>128</xtce:FixedValue>
+              </xtce:Fixed>
+            </xtce:SizeInBits>
+          </xtce:StringDataEncoding>
+        </xtce:StringArgumentType>
+        <xtce:IntegerArgumentType name="DEST_PORT_Type" initialValue="1235"
+          shortDescription="Destination Port" signed="false">
+          <xtce:IntegerDataEncoding sizeInBits="16" encoding="unsigned"
+            byteOrder="leastSignificantByteFirst" />
+          <xtce:ValidRange minInclusive="0" maxInclusive="65535" />
+        </xtce:IntegerArgumentType>
+      </xtce:ArgumentTypeSet>
+      <xtce:MetaCommandSet>
+        <xtce:MetaCommand name="TO_DEBUG_ENABLE_OUTPUT_CC">
+          <xtce:BaseMetaCommand metaCommandRef="/CCSDS/CCSDS_TC">
+            <xtce:ArgumentAssignmentList>
+              <xtce:ArgumentAssignment argumentName="CCSDS_STREAMID" argumentValue="0x1880" />
+              <xtce:ArgumentAssignment argumentName="CCSDS_FC" argumentValue="6" />
+            </xtce:ArgumentAssignmentList>
+          </xtce:BaseMetaCommand>
+          <xtce:ArgumentList>
+            <xtce:Argument name="DEST_IP" argumentTypeRef="DEST_IP_Type" />
+            <xtce:Argument name="DEST_PORT" argumentTypeRef="DEST_PORT_Type" />
+          </xtce:ArgumentList>
+          <xtce:CommandContainer name="TO_DEBUG_TO_DEBUG_ENABLE_OUTPUT_CC_CommandContainer">
+            <xtce:EntryList>
+              <xtce:ArgumentRefEntry argumentRef="DEST_IP" />
+              <xtce:ArgumentRefEntry argumentRef="DEST_PORT" />
+            </xtce:EntryList>
+            <xtce:BaseContainer containerRef="/CCSDS/CCSDS_TC_CommandContainer" />
+          </xtce:CommandContainer>
+        </xtce:MetaCommand>
+        <xtce:MetaCommand name="TO_DEBUG_NOOP_CC">
+          <xtce:BaseMetaCommand metaCommandRef="/CCSDS/CCSDS_TC">
+            <xtce:ArgumentAssignmentList>
+              <xtce:ArgumentAssignment argumentName="CCSDS_STREAMID" argumentValue="0x1880" />
+              <xtce:ArgumentAssignment argumentName="CCSDS_FC" argumentValue="0" />
+            </xtce:ArgumentAssignmentList>
+          </xtce:BaseMetaCommand>
+          <xtce:CommandContainer name="TO_DEBUG_TO_DEBUG_NOOP_CC_CommandContainer">
+            <xtce:EntryList />          
           </xtce:CommandContainer>
         </xtce:MetaCommand>
       </xtce:MetaCommandSet>
