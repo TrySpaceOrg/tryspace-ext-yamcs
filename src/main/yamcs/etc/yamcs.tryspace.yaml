@@ -97,6 +97,9 @@ mdb:
       file: mdb/sim_42_truth.xtce
   - type: xtce
     args:
+      file: mdb/components/adcs/adcs.xtce
+  - type: xtce
+    args:
       file: mdb/components/demo/demo.xtce
   - type: xtce
     args:
