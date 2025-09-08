@@ -1,20 +1,16 @@
 # Makefile for TrySpace GSW (YAMCS)
-.PHONY: all build clean container runtime start stop shell test
+.PHONY: all clean container runtime start stop shell test
 
 # Variables
-export BUILD_IMAGE ?= tryspaceorg/tryspace-lab:0.0.1
+export BUILD_IMAGE ?= tryspaceorg/tryspace-yamcs:0.0.1
 export RUNTIME_GSW ?= tryspace-gsw
-
-# Color output function
-define print_message
-	@printf "\033[$(1)m$(2)\033[0m\n"
-endef
 
 # Main targets
 all: runtime ## Build and prepare GSW for runtime
 
-build: ## Build GSW using Maven in container
-	docker run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) --user $(shell id -u):$(shell id -g) $(BUILD_IMAGE) ./mvnw clean package -DskipTests
+container: Dockerfile.yamcs
+	@command -v docker >/dev/null 2>&1 || { echo "Error: docker is not installed or not in PATH."; exit 1; }
+	docker build -t $(BUILD_IMAGE) -f Dockerfile.yamcs .
 
 copy-comp-gsw-files: ## Copy component GSW files
 	@mkdir -p src/main/yamcs/mdb/components
@@ -46,7 +42,6 @@ copy-comp-gsw-files: ## Copy component GSW files
 	done
 
 clean: stop ## Clean up GSW build artifacts and containers
-	./mvnw clean 2>/dev/null || true
 	docker rmi $(RUNTIME_GSW):latest 2>/dev/null || true
 	docker volume rm gsw-data 2>/dev/null || true
 	@rm -rf src/main/yamcs/mdb/components 2>/dev/null || true
@@ -57,7 +52,7 @@ logs: ## Show GSW container logs
 	docker logs -f $(RUNTIME_GSW)
 
 runtime: copy-comp-gsw-files
-	docker build -t $(RUNTIME_GSW):latest -f Dockerfile --build-arg USER_ID=$(shell id -u) --build-arg GROUP_ID=$(shell id -g) .
+	docker build -t $(RUNTIME_GSW):latest -f Dockerfile.gsw --no-cache --build-arg USER_ID=$(shell id -u) --build-arg GROUP_ID=$(shell id -g) .
 
 start: ## Start GSW container
 	docker run --rm -it \

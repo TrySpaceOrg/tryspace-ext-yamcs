@@ -1,0 +1,24 @@
+# TrySpace YAMCS Base Dockerfile
+# https://github.com/TrySpaceOrg/tryspace-gsw
+#
+# Assumes build using `make container` from top level of tryspace-gsw repository
+#
+# docker push tryspaceorg/tryspace-yamcs:0.0.1
+#
+
+FROM maven:3.9.9-eclipse-temurin-17
+ENV DEBIAN_FRONTEND=noninteractive
+LABEL maintainer="TrySpaceOrg" description="Base image for TrySpace YAMCS"
+
+WORKDIR /app
+
+# Copy files
+COPY pom.xml ./
+COPY mvnw mvnw.cmd ./
+COPY .mvn .mvn/
+
+# Install curl for healthcheck
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Download dependencies
+RUN mvn dependency:go-offline -B
