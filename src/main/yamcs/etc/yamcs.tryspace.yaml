@@ -79,6 +79,11 @@ dataLinks:
     host: tryspace-fsw
     port: 1234
     commandPostprocessorClassName: org.yamcs.tctm.cfs.CfsCommandPostprocessor
+  - name: sim-backdoor
+    class: org.yamcs.tctm.UdpTcDataLink
+    stream: tc_backdoor
+    host: tryspace-director
+    port: 50060
   - name: truth42-in
     class: org.yamcs.tctm.UdpTmDataLink
     stream: truth42_data
@@ -125,4 +130,6 @@ streamConfig:
     - name: "tc_realtime"
       processor: "realtime"
       rootContainer: "/CCSDS/CCSDS_TC"
+    - name: "tc_backdoor"
+      processor: "realtime"
   sqlFile: "etc/extra_streams.sql"
