@@ -4,6 +4,7 @@
 # Variables
 export BUILD_IMAGE ?= tryspaceorg/tryspace-yamcs:0.0.1
 export RUNTIME_GSW ?= tryspace-gsw
+export SPACECRAFT ?= latest
 
 # Main targets
 all: runtime ## Build and prepare GSW for runtime
@@ -52,7 +53,7 @@ logs: ## Show GSW container logs
 	docker logs -f $(RUNTIME_GSW)
 
 runtime: copy-comp-gsw-files
-	docker build -t $(RUNTIME_GSW):latest -f Dockerfile.gsw --no-cache --build-arg USER_ID=$(shell id -u) --build-arg GROUP_ID=$(shell id -g) .
+	docker build -t $(RUNTIME_GSW):$(SPACECRAFT) -f Dockerfile.gsw --no-cache --build-arg USER_ID=$(shell id -u) --build-arg GROUP_ID=$(shell id -g) .
 
 start: ## Start GSW container
 	docker run --rm -it \
