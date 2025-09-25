@@ -1,22 +1,20 @@
 # Makefile for TrySpace GSW (YAMCS)
-.PHONY: all build clean container runtime start stop shell test
+.PHONY: all clean container runtime start stop shell test
 
 # Variables
-export BUILD_IMAGE ?= tryspaceorg/tryspace-lab:0.0.0
-export RUNTIME_GSW ?= tryspace-gsw
-
-# Color output function
-define print_message
-	@printf "\033[$(1)m$(2)\033[0m\n"
-endef
+export BUILD_IMAGE ?= tryspaceorg/tryspace-yamcs:0.0.1
+export MISSION ?= default
+export RUNTIME_GSW ?= tryspace-gsw-$(MISSION)
+export SPACECRAFT ?= latest
 
 # Main targets
 all: runtime ## Build and prepare GSW for runtime
 
-build: ## Build GSW using Maven in container
-	docker run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) --user $(shell id -u):$(shell id -g) $(BUILD_IMAGE) ./mvnw clean package -DskipTests
+container: Dockerfile.yamcs
+	@command -v docker >/dev/null 2>&1 || { echo "Error: docker is not installed or not in PATH."; exit 1; }
+	docker build -t $(BUILD_IMAGE) -f Dockerfile.yamcs .
 
-copy-comp-gsw-files: ## Copy component GSW files to mdb directory
+copy-comp-gsw-files: ## Copy component GSW files
 	@mkdir -p src/main/yamcs/mdb/components
 	@rm -rf src/main/yamcs/mdb/components/*
 	@for comp_dir in ../comp/*/gsw; do \
@@ -26,18 +24,37 @@ copy-comp-gsw-files: ## Copy component GSW files to mdb directory
 			cp -f "$$comp_dir"/* "src/main/yamcs/mdb/components/$$comp_name/" 2>/dev/null || true; \
 		fi; \
 	done
+	@mkdir -p src/main/yamcs/displays/components
+	@rm -rf src/main/yamcs/displays/components/*
+	@for disp_dir in ../comp/*/gsw/displays; do \
+		if [ -d "$$disp_dir" ]; then \
+			comp_name=$$(basename $$(dirname $$(dirname "$$disp_dir"))); \
+			mkdir -p "src/main/yamcs/displays/components/$$comp_name"; \
+			cp -f "$$disp_dir"/* "src/main/yamcs/displays/components/$$comp_name/" 2>/dev/null || true; \
+		fi; \
+	done
+	@mkdir -p src/main/yamcs/procedures/components
+	@rm -rf src/main/yamcs/procedures/components/*
+	@for proc_dir in ../comp/*/gsw/procedures; do \
+		if [ -d "$$proc_dir" ]; then \
+			comp_name=$$(basename $$(dirname $$(dirname "$$proc_dir"))); \
+			mkdir -p "src/main/yamcs/procedures/components/$$comp_name"; \
+			cp -f "$$proc_dir"/* "src/main/yamcs/procedures/components/$$comp_name/" 2>/dev/null || true; \
+		fi; \
+	done
 
 clean: stop ## Clean up GSW build artifacts and containers
-	./mvnw clean 2>/dev/null || true
-	docker rmi $(RUNTIME_GSW):latest 2>/dev/null || true
+	docker rmi $(RUNTIME_GSW):$(MISSION)-$(SPACECRAFT) 2>/dev/null || true
 	docker volume rm gsw-data 2>/dev/null || true
 	@rm -rf src/main/yamcs/mdb/components 2>/dev/null || true
+	@rm -rf src/main/yamcs/displays/components 2>/dev/null || true
+	@rm -rf src/main/yamcs/procedures/components 2>/dev/null || true
 
 logs: ## Show GSW container logs
 	docker logs -f $(RUNTIME_GSW)
 
 runtime: copy-comp-gsw-files
-	docker build -t $(RUNTIME_GSW):latest -f Dockerfile --build-arg USER_ID=$(shell id -u) --build-arg GROUP_ID=$(shell id -g) .
+	docker build -t $(RUNTIME_GSW):$(MISSION)-$(SPACECRAFT) -f Dockerfile.gsw --no-cache --build-arg USER_ID=$(shell id -u) --build-arg GROUP_ID=$(shell id -g) .
 
 start: ## Start GSW container
 	docker run --rm -it \
@@ -45,7 +62,7 @@ start: ## Start GSW container
 		--network host \
 		-p 8090:8090 \
 		-v gsw-data:/app/yamcs-data \
-		$(RUNTIME_GSW):latest
+		$(RUNTIME_GSW):$(MISSION)-$(SPACECRAFT)
 
 shell: ## Get shell access to running GSW container
 	docker exec -it $(RUNTIME_GSW) /bin/bash

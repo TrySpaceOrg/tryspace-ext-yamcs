@@ -1,0 +1,37 @@
+# TrySpace YAMCS GSW w/ Pre-built Files
+# https://github.com/TrySpaceOrg/tryspace-gsw
+#
+
+FROM tryspaceorg/tryspace-yamcs:0.0.1 AS builder
+WORKDIR /app
+
+# Copy files
+COPY pom.xml mvnw mvnw.cmd ./
+COPY .mvn .mvn/
+COPY src/ src/
+
+# Build the application
+RUN mvn clean package -DskipTests
+
+# Runtime stage - base from your lab/build image
+FROM tryspaceorg/tryspace-yamcs:0.0.1
+WORKDIR /app
+
+# Copy the built application from builder stage
+COPY --from=builder /app/target/*-bundle.tar.gz ./
+RUN tar -xzf *-bundle.tar.gz --strip-components=1 && rm *-bundle.tar.gz
+
+# Copy entrypoint script (do this as root so we can chmod)
+COPY bin/entrypoint.sh /app/bin/entrypoint.sh
+RUN chmod +x /app/bin/entrypoint.sh
+
+# Expose ports
+EXPOSE 8090 10015/udp 10025/udp
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8090 || exit 1
+
+# Start YAMCS (entrypoint already copied and chmod'd as root)
+ENTRYPOINT ["/app/bin/entrypoint.sh"]
+CMD [""]
